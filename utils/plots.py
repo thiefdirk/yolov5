@@ -70,17 +70,29 @@ def check_pil_font(font=FONT, size=10):
 
 class Annotator:
     # YOLOv5 Annotator for train/val mosaics and jpgs and detect/hub inference annotations
-    def __init__(self, im, line_width=None, font_size=None, font='Arial.ttf', pil=False, example='abc'):
+    def __init__(self, im, line_width=None, font_size=None, font='D:/NanumGothic.ttf', pil=False, example='abc'):
         assert im.data.contiguous, 'Image not contiguous. Apply np.ascontiguousarray(im) to Annotator() input images.'
         non_ascii = not is_ascii(example)  # non-latin labels, i.e. asian, arabic, cyrillic
         self.pil = pil or non_ascii
         if self.pil:  # use PIL
             self.im = im if isinstance(im, Image.Image) else Image.fromarray(im)
             self.draw = ImageDraw.Draw(self.im)
-            self.font = check_pil_font(font='Arial.Unicode.ttf' if non_ascii else font,
+            self.font = check_pil_font(font='D:/NanumGothic.ttf' if non_ascii else font,
                                        size=font_size or max(round(sum(self.im.size) / 2 * 0.035), 12))
+            print('------------------')
         else:  # use cv2
-            self.im = im
+            self.im = im if isinstance(im, Image.Image) else Image.fromarray(im)
+            print(im.shape)
+            self.draw = ImageDraw.Draw(self.im)
+            
+            
+            self.font = check_pil_font(font='D:/NanumGothic.ttf' if non_ascii else font,
+                            size=font_size or max(round(sum(self.im.size) / 2 * 0.035), 12))
+            
+            
+            # self.im = im
+            print('------------------')
+            
         self.lw = line_width or max(round(sum(im.shape) / 2 * 0.003), 2)  # line width
 
     def box_label(self, box, label='', color=(128, 128, 128), txt_color=(255, 255, 255)):

@@ -97,6 +97,7 @@ def run(
     device = select_device(device)
     model = DetectMultiBackend(weights, device=device, dnn=dnn, data=data, fp16=half)
     stride, names, pt = model.stride, model.names, model.pt
+        
     imgsz = check_img_size(imgsz, s=stride)  # check image size
 
     # Dataloader
@@ -169,7 +170,58 @@ def run(
 
                     if save_img or save_crop or view_img:  # Add bbox to image
                         c = int(cls)  # integer class
+                        if names[c] == 'person':
+                                names[c] = '사람'
+                        elif names[c] == 'tie':
+                                names[c] = '넥타이'
+                        elif names[c] == 'cell phone':
+                                names[c] = '휴대폰'
+                        elif names[c] == 'tv':
+                                names[c] = '모니터'
+                        elif names[c] == 'chair':
+                                names[c] = '의자'
+                        elif names[c] == 'cup':
+                                names[c] = '컵'
+                        elif names[c] == 'keyboard':
+                                names[c] = '키보드'
+                        elif names[c] == 'mouse':
+                                names[c] = '마우스'
+                        elif names[c] == 'book':
+                                names[c] = '책' 
+                        elif names[c] == 'bottle':
+                                names[c] = '병'
+                        elif names[c] == 'cat':
+                                names[c] = '고양이'
+                        elif names[c] == 'suitcase':
+                                names[c] = '여행가방' 
+                        elif names[c] == 'dining table':
+                                names[c] = '식탁'
+                        elif names[c] == 'laptop':
+                                names[c] = '노트북'
+                        elif names[c] == 'bed':
+                                names[c] = '침대'
+                        elif names[c] == 'oven':
+                                names[c] = '오븐'
+
+                        elif names[c] == 'refrigerator':
+                                names[c] = '냉장고'
+                                
+                        elif names[c] == 'bowl':
+                                names[c] = '그릇'
+                        elif names[c] == 'knife':
+                                names[c] = '칼'
+                        elif names[c] == 'carrot':
+                                names[c] = '당근'
+                        elif names[c] == 'traffic light':
+                                names[c] = '신호등'
+                        elif names[c] == 'microwave':
+                                names[c] = '전자레인지'
+                        elif names[c] == 'couche':
+                                names[c] = '소파'
+                                
                         label = None if hide_labels else (names[c] if hide_conf else f'{names[c]} {conf:.2f}')
+                        # yolov5 클라스 한글로 변경
+                            
                         annotator.box_label(xyxy, label, color=colors(c, True))
                     if save_crop:
                         save_one_box(xyxy, imc, file=save_dir / 'crops' / names[c] / f'{p.stem}.jpg', BGR=True)
